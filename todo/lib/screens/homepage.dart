@@ -9,6 +9,19 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  //todo list
+  List todoList = [
+    ["Learn Flutter", true],
+    ["Learn SQL", false],
+  ];
+
+  //OnChanged mehod for checkbox
+  void checkBoxChanged(bool? value, int index) {
+    setState(() {
+      todoList[index][1] = !todoList[index][1];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,13 +32,15 @@ class _HomepageState extends State<Homepage> {
       ),
       backgroundColor: Colors.yellow[200],
       body: Container(
-        child: ListView(
-          children: [
-            ToDoTile(),
-            ToDoTile(),
-            ToDoTile(),
-            ToDoTile(),
-          ],
+        child: ListView.builder(
+          itemCount: todoList.length,
+          itemBuilder: (context, index) {
+            return ToDoTile(
+              taskName: todoList[index][0],
+              taskCompleted: todoList[index][1],
+              onChanged: (value) => checkBoxChanged(value, index),
+            );
+          },
         ),
       ),
     );
