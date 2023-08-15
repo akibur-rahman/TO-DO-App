@@ -15,7 +15,7 @@ class DefaultButton extends StatelessWidget {
     return MaterialButton(
       onPressed: onPressed,
       child: Text(text),
-      color: Theme.of(context).primaryColor,
+      color: Colors.yellow[300],
     );
   }
 }
