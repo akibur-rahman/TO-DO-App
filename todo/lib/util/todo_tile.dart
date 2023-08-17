@@ -57,14 +57,16 @@ class ToDoTile extends StatelessWidget {
             children: [
               taskCompleted ? Icon(Icons.check) : Icon(Icons.circle_outlined),
               SizedBox(width: 8),
-              Text(
-                taskName,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  decoration: taskCompleted
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
+              Expanded(
+                child: Text(
+                  taskName,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    decoration: taskCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                  ),
                 ),
               ),
             ],

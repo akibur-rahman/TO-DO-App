@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/data/database.dart';
+import 'package:todo/screens/set_routine.dart';
 import 'package:todo/util/dialog_box.dart';
 import 'package:todo/util/todo_tile.dart';
+import 'package:todo/util/about_dialog.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -37,12 +39,50 @@ class _HomepageState extends State<Homepage> {
   }
 
   void saveNewTask() {
-    setState(() {
-      db.toDoList.add([_controller.text, false]);
-      _controller.clear();
-    });
-    Navigator.of(context).pop();
-    db.updateData();
+    if (_controller.text == "") {
+      Navigator.of(context).pop();
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Colors.yellow,
+          content: Container(
+            height: 120,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.close_rounded,
+                  size: 44,
+                  color: Colors.red,
+                ),
+                Text(
+                  "Empty Data not allowed",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 7,
+                ),
+                MaterialButton(
+                  color: Colors.yellow[200],
+                  onPressed: Navigator.of(context).pop,
+                  child: Text(
+                    "Close",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      setState(() {
+        db.toDoList.add([_controller.text, false]);
+        _controller.clear();
+      });
+      Navigator.of(context).pop();
+      db.updateData();
+    }
   }
 
   // create a new task
@@ -53,7 +93,10 @@ class _HomepageState extends State<Homepage> {
         return DialogBox(
           controller: _controller,
           onSave: saveNewTask,
-          onCancel: () => Navigator.of(context).pop(),
+          onCancel: () {
+            Navigator.of(context).pop();
+            _controller.clear();
+          },
         );
       },
     );
@@ -77,6 +120,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //appbar
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -84,11 +128,60 @@ class _HomepageState extends State<Homepage> {
         ),
         elevation: 0,
       ),
+      //Navigation Drawer
+      drawer: Drawer(
+        backgroundColor: Colors.yellow,
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    size: 80,
+                  ),
+                  Text(
+                    "TO-DO",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.task,
+                size: 24,
+                color: Colors.black,
+              ),
+              title: Text(
+                "Set Routine",
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SetRoutine(),
+                  ),
+                );
+              },
+            ),
+            AboutDialogBox(),
+          ],
+        ),
+      ),
+      //background color for body
       backgroundColor: Colors.yellow[200],
+      //floating action button
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
         child: Icon(Icons.add),
       ),
+      //body of the page
       body: Container(
         child: ListView.builder(
           itemCount: db.toDoList.length,
