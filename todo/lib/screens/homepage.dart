@@ -69,8 +69,9 @@ class _HomepageState extends State<Homepage> {
 
   void taskCompleted(int index) {
     setState(() {
-      db.toDoList[index][1] = true;
+      db.toDoList[index][1] = !db.toDoList[index][1];
     });
+    db.updateData();
   }
 
   @override
@@ -79,7 +80,7 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "TO DO",
+          "TO-DO",
         ),
         elevation: 0,
       ),

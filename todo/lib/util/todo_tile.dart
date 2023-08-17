@@ -29,9 +29,9 @@ class ToDoTile extends StatelessWidget {
         startActionPane: ActionPane(motion: StretchMotion(), children: [
           SlidableAction(
             onPressed: completeFunction,
-            backgroundColor: Colors.green,
-            icon: Icons.done,
-            label: 'Complete',
+            backgroundColor: taskCompleted ? Colors.amber : Colors.green,
+            icon: taskCompleted ? Icons.undo : Icons.done,
+            label: taskCompleted ? 'Undo' : 'Complete',
             borderRadius: BorderRadius.circular(12),
           ),
         ]),
@@ -55,11 +55,8 @@ class ToDoTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Checkbox(
-                value: taskCompleted,
-                onChanged: onChanged,
-                activeColor: Colors.black,
-              ),
+              taskCompleted ? Icon(Icons.check) : Icon(Icons.circle_outlined),
+              SizedBox(width: 8),
               Text(
                 taskName,
                 style: TextStyle(
