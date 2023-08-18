@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/screens/homepage.dart';
+import 'package:todo/screens/set_routine.dart';
 
 void main() async {
   //hive init
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.yellow),
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
+      home: SetRoutine(),
     );
   }
 }
